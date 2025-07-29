@@ -1,6 +1,22 @@
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     
+    // Initialize theme from localStorage or default to light
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.className = savedTheme + '-theme';
+    
+    // Get theme toggle button from header
+    const themeToggleBtn = document.getElementById('themeToggle');
+    
+    // Update theme toggle button icon based on current theme
+    function updateThemeToggleIcon() {
+        const isLightTheme = document.body.classList.contains('light-theme');
+        themeToggleBtn.innerHTML = isLightTheme ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+    }
+    
+    // Initialize button icon
+    updateThemeToggleIcon();
+    
     // Parallax effect for floating elements
     const floatingElements = document.querySelectorAll('.floating-element');
     
@@ -71,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         particle.addEventListener('mouseleave', function() {
             this.style.transform = 'scale(1)';
-            this.style.opacity = '0.6';
+            this.style.opacity = document.body.classList.contains('light-theme') ? '0.4' : '0.6';
         });
     });
 
@@ -123,6 +139,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const header = document.querySelector('.header');
     header.parentNode.insertBefore(searchInput, header.nextSibling);
 
+    // Update search input styles based on theme
+    function updateSearchInputStyles() {
+        const isLightTheme = document.body.classList.contains('light-theme');
+        if (isLightTheme) {
+            searchInput.style.border = '2px solid rgba(102, 126, 234, 0.2)';
+            searchInput.style.background = 'rgba(255, 255, 255, 0.9)';
+            searchInput.style.color = '#2c3e50';
+            searchInput.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.1)';
+        } else {
+            searchInput.style.border = '2px solid rgba(102, 126, 234, 0.3)';
+            searchInput.style.background = 'rgba(15, 15, 35, 0.8)';
+            searchInput.style.color = '#ffffff';
+            searchInput.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3)';
+        }
+    }
+
     // Search functionality
     searchInput.addEventListener('input', function() {
         const searchTerm = this.value.toLowerCase();
@@ -144,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Floating action buttons
+    // Floating action buttons (only scroll to top now)
     const actionButtons = document.createElement('div');
     actionButtons.className = 'action-buttons';
     actionButtons.style.cssText = `
@@ -175,24 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
         visibility: hidden;
     `;
 
-    // Theme toggle button
-    const themeToggleBtn = document.createElement('button');
-    themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
-    themeToggleBtn.style.cssText = `
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        cursor: pointer;
-        font-size: 18px;
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-        transition: all 0.3s ease;
-    `;
-
     actionButtons.appendChild(scrollToTopBtn);
-    actionButtons.appendChild(themeToggleBtn);
     document.body.appendChild(actionButtons);
 
     // Show/hide scroll to top button
@@ -214,28 +229,57 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Theme toggle functionality
-    let isDarkTheme = true;
-    themeToggleBtn.addEventListener('click', function() {
-        isDarkTheme = !isDarkTheme;
-        if (isDarkTheme) {
-            document.body.style.background = 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)';
-            this.innerHTML = '<i class="fas fa-moon"></i>';
-        } else {
-            document.body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-            this.innerHTML = '<i class="fas fa-sun"></i>';
-        }
-    });
+    // Theme toggle functionality with smooth transition
+    function toggleTheme() {
+        const isLightTheme = document.body.classList.contains('light-theme');
+        const newTheme = isLightTheme ? 'dark' : 'light';
+        
+        // Create transition overlay
+        const transitionOverlay = document.createElement('div');
+        transitionOverlay.className = 'theme-transition';
+        document.body.appendChild(transitionOverlay);
+        
+        // Activate transition
+        setTimeout(() => {
+            transitionOverlay.classList.add('active');
+        }, 10);
+        
+        // Change theme after transition starts
+        setTimeout(() => {
+            document.body.className = newTheme + '-theme';
+            localStorage.setItem('theme', newTheme);
+            
+            // Update theme toggle button icon
+            updateThemeToggleIcon();
+            
+            // Update search input styles
+            updateSearchInputStyles();
+            
+            // Update particle opacity
+            particles.forEach(particle => {
+                particle.style.opacity = newTheme === 'light' ? '0.4' : '0.6';
+            });
+            
+            // Remove transition overlay
+            setTimeout(() => {
+                transitionOverlay.classList.remove('active');
+                setTimeout(() => {
+                    transitionOverlay.remove();
+                }, 300);
+            }, 150);
+        }, 150);
+    }
+
+    // Add click event to theme toggle button
+    themeToggleBtn.addEventListener('click', toggleTheme);
 
     // Hover effects for action buttons
-    [scrollToTopBtn, themeToggleBtn].forEach(btn => {
-        btn.addEventListener('mouseenter', function() {
-            this.style.transform = 'scale(1.1)';
-        });
-        
-        btn.addEventListener('mouseleave', function() {
-            this.style.transform = 'scale(1)';
-        });
+    scrollToTopBtn.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.1)';
+    });
+    
+    scrollToTopBtn.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
     });
 
     // Loading animation
@@ -279,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (e.key === 't' && e.ctrlKey) {
             e.preventDefault();
-            themeToggleBtn.click();
+            toggleTheme();
         }
     });
 
@@ -398,6 +442,9 @@ document.addEventListener('DOMContentLoaded', function() {
             ticking = true;
         }
     });
+
+    // Initialize search input styles
+    updateSearchInputStyles();
 
     console.log('Modern 3D page script loaded successfully!');
 }); 
