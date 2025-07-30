@@ -446,5 +446,142 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize search input styles
     updateSearchInputStyles();
 
+    // Share functionality
+    const shareBtn = document.getElementById('shareBtn');
+    const shareDropdown = document.getElementById('shareDropdown');
+    let isShareOpen = false;
+
+    // Toggle share dropdown
+    shareBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        isShareOpen = !isShareOpen;
+        
+        if (isShareOpen) {
+            shareDropdown.classList.add('active');
+            shareBtn.style.transform = 'scale(1.1) rotate(45deg)';
+        } else {
+            shareDropdown.classList.remove('active');
+            shareBtn.style.transform = 'scale(1) rotate(0deg)';
+        }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!shareBtn.contains(e.target) && !shareDropdown.contains(e.target)) {
+            isShareOpen = false;
+            shareDropdown.classList.remove('active');
+            shareBtn.style.transform = 'scale(1) rotate(0deg)';
+        }
+    });
+
+    // Share options functionality
+    const shareOptions = document.querySelectorAll('.share-option');
+    const pageUrl = window.location.href;
+    const pageTitle = document.title;
+    const pageDescription = 'Sơ đồ Tổ chức - Báo và Phát thanh – Truyền hình Cần Thơ';
+
+    shareOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const platform = this.getAttribute('data-platform');
+            let shareUrl = '';
+
+            switch (platform) {
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
+                    break;
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(pageTitle)}`;
+                    break;
+                case 'linkedin':
+                    shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`;
+                    break;
+                case 'whatsapp':
+                    shareUrl = `https://wa.me/?text=${encodeURIComponent(pageTitle + ' ' + pageUrl)}`;
+                    break;
+                case 'telegram':
+                    shareUrl = `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(pageTitle)}`;
+                    break;
+                case 'copy':
+                    // Copy to clipboard
+                    navigator.clipboard.writeText(pageUrl).then(() => {
+                        showNotification('Đã sao chép link!', 'success');
+                    }).catch(() => {
+                        // Fallback for older browsers
+                        const textArea = document.createElement('textarea');
+                        textArea.value = pageUrl;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        showNotification('Đã sao chép link!', 'success');
+                    });
+                    return;
+            }
+
+            if (shareUrl) {
+                window.open(shareUrl, '_blank', 'width=600,height=400');
+            }
+
+            // Close dropdown after sharing
+            setTimeout(() => {
+                isShareOpen = false;
+                shareDropdown.classList.remove('active');
+                shareBtn.style.transform = 'scale(1) rotate(0deg)';
+            }, 500);
+        });
+    });
+
+    // Notification function
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${type === 'success' ? 'linear-gradient(135deg, #4CAF50, #45a049)' : 'linear-gradient(135deg, #2196F3, #1976D2)'};
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            font-weight: 500;
+            max-width: 300px;
+        `;
+        notification.textContent = message;
+
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
+
+    // Light swipe effect on share button
+    shareBtn.addEventListener('mouseenter', function() {
+        const lightSwipe = this.querySelector('.share-light-swipe');
+        if (lightSwipe) {
+            lightSwipe.style.left = '100%';
+        }
+    });
+
+    shareBtn.addEventListener('mouseleave', function() {
+        const lightSwipe = this.querySelector('.share-light-swipe');
+        if (lightSwipe) {
+            lightSwipe.style.left = '-100%';
+        }
+    });
+
     console.log('Modern 3D page script loaded successfully!');
 }); 

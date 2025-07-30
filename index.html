@@ -31,28 +31,42 @@
         <div class="floating-element" data-speed="0.4"></div>
     </div>
 
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-content">
-                <div class="logo">
-                    <div class="logo-3d">
-                        <div class="logo-front">
-                            <i class="fas fa-broadcast-tower"></i>
-                        </div>
-                        <div class="logo-back"></div>
-                        <div class="logo-left"></div>
-                        <div class="logo-right"></div>
-                        <div class="logo-top"></div>
-                        <div class="logo-bottom"></div>
-                    </div>
-                    <div class="logo-text">
-                        <h1>Báo và Phát thanh – Truyền hình Cần Thơ</h1>
-                        <p>Sơ đồ Tổ chức</p>
-                    </div>
-                </div>
+    <!-- Share Button Fixed -->
+    <div class="share-container">
+        <button class="share-btn" id="shareBtn">
+            <i class="fas fa-share-alt"></i>
+            <div class="share-light-swipe"></div>
+        </button>
+        <div class="share-dropdown" id="shareDropdown">
+            <div class="share-option" data-platform="facebook">
+                <i class="fab fa-facebook"></i>
+                <span>Facebook</span>
             </div>
-        </header>
+            <div class="share-option" data-platform="twitter">
+                <i class="fab fa-twitter"></i>
+                <span>Twitter</span>
+            </div>
+            <div class="share-option" data-platform="linkedin">
+                <i class="fab fa-linkedin"></i>
+                <span>LinkedIn</span>
+            </div>
+            <div class="share-option" data-platform="whatsapp">
+                <i class="fab fa-whatsapp"></i>
+                <span>WhatsApp</span>
+            </div>
+            <div class="share-option" data-platform="telegram">
+                <i class="fab fa-telegram"></i>
+                <span>Telegram</span>
+            </div>
+            <div class="share-option" data-platform="copy">
+                <i class="fas fa-link"></i>
+                <span>Copy Link</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+   
 
         <!-- Main Content -->
         <main class="main-content">
@@ -60,7 +74,7 @@
             <section class="hero-section">
                 <div class="hero-content">
                     <div class="hero-text">
-                        <h2 class="glitch" data-text="Tổng Biên tập">Tổng Biên tập</h2>
+                        <h2 class="glitch" data-text="Tổng Biên tập">Quyền Tổng Biên tập</h2>
                         <div class="hero-card">
                             <div class="card-3d">
                                 <div class="card-front">
@@ -70,7 +84,7 @@
                                         </div>
                                     </div>
                                     <h3>Huỳnh Hoàng Mến</h3>
-                                    <span class="position">Tổng Biên tập</span>
+                                    <span class="position">Quyền Tổng Biên tập</span>
                                 </div>
                                 <div class="card-back">
                                     <div class="back-content">
@@ -92,6 +106,29 @@
                 </div>
                 
                 <div class="leadership-grid">
+                    <div class="leadership-card" data-tilt>
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <h3>Lê Hoàng Vinh</h3>
+                            <span class="position">Phó Tổng Biên tập</span>
+                            <p class="background">Nguyên Phó Giám đốc Đài PT-TH tỉnh Hậu Giang</p>
+                            <div class="card-glow"></div>
+                        </div>
+                    </div>
+
+                    <div class="leadership-card" data-tilt>
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <h3>Thái Hoàng Hinh</h3>
+                            <span class="position">Phó Tổng Biên tập</span>
+                            <p class="background">Nguyên Phó Giám đốc Đài PT-TH tỉnh Hậu Giang</p>
+                            <div class="card-glow"></div>
+                        </div>
+                    </div>
                     <div class="leadership-card" data-tilt>
                         <div class="card-content">
                             <div class="card-icon">
@@ -176,29 +213,7 @@
                         </div>
                     </div>
 
-                    <div class="leadership-card" data-tilt>
-                        <div class="card-content">
-                            <div class="card-icon">
-                                <i class="fas fa-user-tie"></i>
-                            </div>
-                            <h3>Lê Hoàng Vinh</h3>
-                            <span class="position">Phó Tổng Biên tập</span>
-                            <p class="background">Nguyên Phó Giám đốc Đài PT-TH tỉnh Hậu Giang</p>
-                            <div class="card-glow"></div>
-                        </div>
-                    </div>
-
-                    <div class="leadership-card" data-tilt>
-                        <div class="card-content">
-                            <div class="card-icon">
-                                <i class="fas fa-user-tie"></i>
-                            </div>
-                            <h3>Thái Hoàng Hinh</h3>
-                            <span class="position">Phó Tổng Biên tập</span>
-                            <p class="background">Nguyên Phó Giám đốc Đài PT-TH tỉnh Hậu Giang</p>
-                            <div class="card-glow"></div>
-                        </div>
-                    </div>
+                    
                 </div>
             </section>
 
